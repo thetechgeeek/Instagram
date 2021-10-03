@@ -38,4 +38,27 @@ router.post('/register', (req, res) => {
   });
 });
 
+router.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(422).json({ error: 'Please enter email or password.' });
+  }
+  User.findOne({ email: email }).then((SavedUser) => {
+    if (!SavedUser) {
+      return res.status(422).json({ error: 'Invalid Email/Password.' });
+    }
+    bcrypt
+      .compare(password, SavedUser.password)
+      .then((doMatch) => {
+        if (doMatch) {
+          res.json({ message: 'Successfully Signed In.' });
+        } else {
+          return res.status(422).json({ error: 'Invalid Email/Password.' });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+});
 export default router;
