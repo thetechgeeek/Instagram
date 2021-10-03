@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 import { User } from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 router.post('/register', (req, res) => {
   const { name, username, email, password } = req.body;
@@ -51,7 +52,8 @@ router.post('/login', (req, res) => {
       .compare(password, SavedUser.password)
       .then((doMatch) => {
         if (doMatch) {
-          res.json({ message: 'Successfully Signed In.' });
+          const token = jwt.sign({ _id: SavedUser }, process.env.JWT_SECRET);
+          res.json({ token });
         } else {
           return res.status(422).json({ error: 'Invalid Email/Password.' });
         }
