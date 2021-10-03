@@ -3,6 +3,11 @@ const router = express.Router();
 import { User } from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { authMiddleware } from '../middleware/authMiddleware.js';
+
+router.get('/protected', authMiddleware, (req, res) => {
+  res.send('hello');
+});
 
 router.post('/register', (req, res) => {
   const { name, username, email, password } = req.body;
