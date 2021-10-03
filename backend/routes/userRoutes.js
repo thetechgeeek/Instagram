@@ -1,4 +1,5 @@
 import express from 'express';
+import { User } from '../models/userModel.js';
 
 const router = express.Router();
 
@@ -13,5 +14,29 @@ router.post('/register', (req, res) => {
       .status(422)
       .json({ error: 'Please add all the required fields.' });
   }
-  res.json({ message: 'Successfully Posted.' });
+  User.findOne({ email })
+    .then((savedUser) => {
+      if (savedUser) {
+        return res.status(422).json({ error: 'User already exists.' });
+      }
+      const user = new User({
+        name,
+        username,
+        email,
+        password,
+      });
+      user
+        .save()
+        .then((user) => {
+          res.json({ message: 'Saved successfully.' });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
+
+export default router;
