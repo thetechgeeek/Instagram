@@ -66,7 +66,7 @@ const Header = () => {
               className='btn'
               type='button'
               style={{ background: '#ffffff' }}
-              to={`/createpost`}
+              to={`/post/create`}
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
