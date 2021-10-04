@@ -49,23 +49,27 @@ router.post('/login', (req, res) => {
   if (!email || !password) {
     res.status(422).json({ error: 'Please enter email or password.' });
   }
-  User.findOne({ email: email }).then((SavedUser) => {
-    if (!SavedUser) {
-      return res.status(422).json({ error: 'Invalid Email/Password.' });
-    }
-    bcrypt
-      .compare(password, SavedUser.password)
-      .then((doMatch) => {
-        if (doMatch) {
-          const token = jwt.sign({ _id: SavedUser }, process.env.JWT_SECRET);
-          res.json({ token });
-        } else {
-          return res.status(422).json({ error: 'Invalid Email/Password.' });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
+  User.findOne({ email: email })
+    .then((SavedUser) => {
+      if (!SavedUser) {
+        return res.status(422).json({ error: 'Invalid Email/Password.' });
+      }
+      bcrypt
+        .compare(password, SavedUser.password)
+        .then((doMatch) => {
+          if (doMatch) {
+            const token = jwt.sign({ _id: SavedUser }, process.env.JWT_SECRET);
+            res.json({ token });
+          } else {
+            return res.status(422).json({ error: 'Invalid Email/Password.' });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 export default router;
