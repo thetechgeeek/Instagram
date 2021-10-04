@@ -24,7 +24,7 @@ export const authMiddleware = (req, res, next) => {
     const { _id } = payload;
     User.findById(_id).then((userData) => {
       req.user = userData;
+      next();
     });
-    next();
   });
 };
