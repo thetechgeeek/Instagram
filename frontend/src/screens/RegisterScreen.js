@@ -1,5 +1,6 @@
 import React from 'react';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 
 const RegisterScreen = () => {
   return (
@@ -174,7 +175,14 @@ const RegisterScreen = () => {
               }}
             >
               <span>Have an account?</span>
-              <span style={{ marginLeft: ' 5px' }}>Login</span>
+              <span style={{ marginLeft: ' 5px' }}>
+                <Link
+                  to={`/login`}
+                  style={{ textDecoration: 'none', color: 'black' }}
+                >
+                  Login
+                </Link>
+              </span>
             </div>
           </form>
           <form
