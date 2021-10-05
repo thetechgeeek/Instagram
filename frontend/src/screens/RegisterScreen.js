@@ -1,8 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 
 const RegisterScreen = () => {
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+
+  const PostData = () => {
+    if (
+      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email
+      )
+    ) {
+      console.log('Invalid Email.');
+      return;
+    }
+    fetch('/register', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        username,
+        password,
+        email,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+        } else {
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <div
@@ -30,6 +64,7 @@ const RegisterScreen = () => {
                 marginBottom: ' 10px',
               }}
             />
+
             <div>
               <p style={{ width: ' 258px', margin: ' auto' }}>
                 Sign up to see photos and videos from your friends
@@ -82,6 +117,10 @@ const RegisterScreen = () => {
                 width: ' 258px',
               }}
               placeholder='Mobile Number or email address'
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
             <input
               type='text'
@@ -97,6 +136,10 @@ const RegisterScreen = () => {
                 width: ' 258px',
               }}
               placeholder='Full name'
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
             <input
               type='text'
@@ -112,6 +155,10 @@ const RegisterScreen = () => {
                 width: ' 258px',
               }}
               placeholder='Username'
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
             />
             <input
               type='password'
@@ -127,6 +174,10 @@ const RegisterScreen = () => {
                 width: ' 258px',
               }}
               placeholder='Password'
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
             <button
               className='btn btn-primary shadow-none'
@@ -139,8 +190,9 @@ const RegisterScreen = () => {
                 paddingTop: ' 0px',
                 fontSize: ' 13px',
               }}
+              onClick={() => PostData()}
             >
-              Log In
+              Sign Up
             </button>
             <div
               style={{
