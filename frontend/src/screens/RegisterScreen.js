@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import Footer from '../components/Footer';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const RegisterScreen = () => {
+  const history = useHistory();
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -22,15 +23,16 @@ const RegisterScreen = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name,
+        email,
         username,
         password,
-        email,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
         } else {
+          history.push('/login');
         }
       })
       .catch((err) => {
