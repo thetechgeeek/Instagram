@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Footer from '../components/Footer';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const LoginScreen = () => {
+  const history = useHistory();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const PostData = () => {
+    if (
+      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email
+      )
+    ) {
+      console.log('Invalid Email.');
+      return;
+    }
+    fetch('/login', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+        } else {
+          history.push('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <div
@@ -51,6 +84,10 @@ const LoginScreen = () => {
                 width: ' 258px',
               }}
               placeholder='Phone number, username or email address'
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             />
             <input
               type='password'
@@ -66,6 +103,10 @@ const LoginScreen = () => {
                 width: ' 258px',
               }}
               placeholder='Password'
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             />
             <button
               className='btn btn-primary shadow-none'
@@ -78,6 +119,7 @@ const LoginScreen = () => {
                 paddingTop: ' 0px',
                 fontSize: ' 13px',
               }}
+              onClick={() => PostData()}
             >
               Log In
             </button>
