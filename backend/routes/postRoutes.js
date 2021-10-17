@@ -26,14 +26,14 @@ router.get('/myposts', authMiddleware, (req, res) => {
 });
 router.post('/createpost', authMiddleware, (req, res) => {
   const { location, caption, image } = req.body;
-  if (!location || !caption) {
+  if (!location || !caption || !image) {
     return res.status(422).json({ error: 'Please add all the fields.' });
   }
   req.user.password = undefined;
   const post = new Post({
     location,
     caption,
-    image,
+    image: image,
     postedBy: req.user,
   });
   post

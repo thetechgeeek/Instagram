@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -9,6 +9,34 @@ const CreatePostScreen = () => {
   const [caption, setCaption] = useState('');
   const [image, setImage] = useState('');
   const [url, setUrl] = useState('');
+  useEffect(() => {
+    if (url) {
+      fetch('/createpost', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+        },
+        body: JSON.stringify({
+          location,
+          caption,
+          image: url,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.error) {
+            console.log(data.error);
+          } else {
+            history.push('/');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [url]);
   const postDetail = () => {
     const data = new FormData();
     data.append('file', image);
@@ -21,27 +49,6 @@ const CreatePostScreen = () => {
       .then((res) => res.json())
       .then((data) => {
         setUrl(data.url);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    fetch('/createpost', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location,
-        caption,
-        image: url,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.error) {
-        } else {
-          history.push('/');
-        }
       })
       .catch((err) => {
         console.log(err);

@@ -29,6 +29,8 @@ const LoginScreen = () => {
         console.log(data);
         if (data.error) {
         } else {
+          localStorage.setItem('jwt', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
           history.push('/');
         }
       })
