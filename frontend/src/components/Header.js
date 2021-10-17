@@ -175,8 +175,8 @@ const Header = () => {
       <nav
         className='navbar navbar-light navbar-expand fixed-bottom d-flex flex-row justify-content-between navigation-clean d-block d-md-none'
         style={{
-          paddingLeft: '16px',
-          paddingRight: '16px',
+          paddingLeft: '30px',
+          paddingRight: '30px',
           paddingTop: '0.4rem',
           paddingBottom: '0.4rem',
           marginLeft: '0px',
