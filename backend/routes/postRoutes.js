@@ -25,14 +25,15 @@ router.get('/myposts', authMiddleware, (req, res) => {
     });
 });
 router.post('/createpost', authMiddleware, (req, res) => {
-  const { title, body } = req.body;
-  if (!title || !body) {
+  const { location, caption, image } = req.body;
+  if (!location || !caption) {
     return res.status(422).json({ error: 'Please add all the fields.' });
   }
   req.user.password = undefined;
   const post = new Post({
-    title,
-    body,
+    location,
+    caption,
+    image,
     postedBy: req.user,
   });
   post

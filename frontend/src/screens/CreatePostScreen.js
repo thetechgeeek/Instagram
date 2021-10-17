@@ -1,8 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const CreatePostScreen = () => {
+  const history = useHistory();
+  const [location, setLocation] = useState('');
+  const [caption, setCaption] = useState('');
+  const [image, setImage] = useState('');
+  const [url, setUrl] = useState('');
+  const postDetail = () => {
+    const data = new FormData();
+    data.append('file', image);
+    data.append('upload_preset', 'instagram');
+    data.append('cloud_name', 'thetechgeeek');
+    fetch('	https://api.cloudinary.com/v1_1/thetechgeeek/image/upload', {
+      method: 'post',
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUrl(data.url);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    fetch('/createpost', {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location,
+        caption,
+        image: url,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+        } else {
+          history.push('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <Header />
@@ -31,6 +75,7 @@ const CreatePostScreen = () => {
               type='file'
               className='shadow-none form-control'
               id='photo'
+              onChange={(e) => setImage(e.target.files[0])}
             />
           </div>
         </div>
@@ -44,6 +89,8 @@ const CreatePostScreen = () => {
               className='shadow-none form-control'
               id='caption'
               placeholder='Enter Caption'
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
             />
           </div>
         </div>
@@ -51,18 +98,21 @@ const CreatePostScreen = () => {
           <label htmlFor='location' className='col-sm-2 col-form-label'>
             Location
           </label>
-          <div className='col-sm-10'>
+          <div className=' col-sm-10'>
             <input
               type='text'
               className='shadow-none form-control'
               id='location'
               placeholder='Enter location'
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
             />
           </div>
         </div>
         <button
           className='btn btn-primary shadow-none py-0 mx-auto'
           style={{ marginTop: '10px' }}
+          onClick={() => postDetail()}
         >
           Submit
         </button>
