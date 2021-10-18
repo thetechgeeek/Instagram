@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Post from '../components/Post';
 
 const HomeScreen = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetch('/allposts', {
+      headers: { Authorization: 'Bearer ' + localStorage.getItem('jwt') },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setData(result.posts);
+      });
+  }, []);
   return (
     <>
       <Header />
       <div className='container'>
         <div className='row' style={{ marginTop: '70px' }}>
-          <div className='col-lg-8 col-md-12 align-self-center'></div>
+          <div className='col-lg-8 col-md-12 align-self-center'>
+            {data.map((post) => (
+              <Post post={post} />
+            ))}
+          </div>
           <div className='col-lg-4 d-none d-lg-block'>
             <div style={{ position: 'fixed', width: '20%' }}>
               <div style={{ marginTop: '20px' }}>
@@ -25,6 +40,7 @@ const HomeScreen = () => {
                     }}
                   >
                     <img
+                      alt=''
                       className='rounded-circle'
                       style={{ height: ' 56px', width: ' 56px' }}
                       src='https://media-exp1.licdn.com/dms/image/C4E0BAQHikN6EXPd23Q/company-logo_200_200/0/1595359131127?e=2159024400&v=beta&t=S5MNjBDjiH433VCWzjPeiopNDhxGwmfcMk4Zf1P_m_s'
@@ -113,6 +129,7 @@ const HomeScreen = () => {
                       }}
                     >
                       <img
+                        alt=''
                         className='rounded-circle'
                         style={{ height: ' 36px', width: ' 36px' }}
                         src='https://media-exp1.licdn.com/dms/image/C4E0BAQHikN6EXPd23Q/company-logo_200_200/0/1595359131127?e=2159024400&v=beta&t=S5MNjBDjiH433VCWzjPeiopNDhxGwmfcMk4Zf1P_m_s'

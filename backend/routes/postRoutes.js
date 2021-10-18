@@ -3,8 +3,8 @@ const router = express.Router();
 import Post from '../models/postModel.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 
-router.get('/allposts', (req, res) => {
-  Post.find({})
+router.get('/allposts', authMiddleware, (req, res) => {
+  Post.find()
     .populate('postedBy', '_id name username')
     .then((posts) => {
       res.json({ posts });
