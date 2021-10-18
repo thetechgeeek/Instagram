@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Post from '../components/Post';
+import { UserContext } from '../App';
 
 const HomeScreen = () => {
   const [data, setData] = useState([]);
+  const { state } = useContext(UserContext);
+  console.log(state);
   useEffect(() => {
     fetch('/allposts', {
       headers: { Authorization: 'Bearer ' + localStorage.getItem('jwt') },
@@ -58,10 +61,10 @@ const HomeScreen = () => {
                         marginTop: ' 10px',
                       }}
                     >
-                      rowanrow
+                      {state ? state.username : 'Loading...'}
                     </p>
                     <p style={{ marginTop: ' 0px', fontSize: ' 12px' }}>
-                      Rowan Row
+                      {state ? state.name : 'Loading...'}
                     </p>
                   </div>
                   <div className='col-3 d-flex flex-row justify-content-start align-items-center'>
