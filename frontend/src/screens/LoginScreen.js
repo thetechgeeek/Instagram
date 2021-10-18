@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Footer from '../components/Footer';
 import { Link, useHistory } from 'react-router-dom';
-
+import { UserContext } from '../App';
 const LoginScreen = () => {
+  const { state, dispatch } = useContext(UserContext);
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,6 +32,7 @@ const LoginScreen = () => {
         } else {
           localStorage.setItem('jwt', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
+          dispatch({ type: 'USER', payload: data.user });
           history.push('/');
         }
       })
