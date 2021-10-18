@@ -4,6 +4,7 @@ const postSchema = new mongoose.Schema({
   location: { type: String, required: true },
   caption: { type: String, required: true },
   image: { type: String, required: true },
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
