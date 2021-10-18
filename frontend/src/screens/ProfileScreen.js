@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { UserContext } from '../App';
 
 const ProfileScreen = () => {
+  const [myPosts, setMyPosts] = useState([]);
+  const { state } = useContext(UserContext);
+  useEffect(() => {
+    fetch('/myposts', {
+      headers: { Authorization: 'Bearer ' + localStorage.getItem('jwt') },
+    })
+      .then((res) => res.json())
+      .then((result) => setMyPosts(result.myPosts));
+  }, []);
   return (
     <>
       <Header />
@@ -44,7 +54,7 @@ const ProfileScreen = () => {
                         marginTop: '2px',
                       }}
                     >
-                      rowanrow
+                      {state ? state.username : 'Loading...'}
                     </h2>
                   </div>
                   <div>
@@ -143,7 +153,9 @@ const ProfileScreen = () => {
                   <span>2 following</span>
                 </div>
                 <div style={{ textAlign: 'left' }}>
-                  <h6 style={{ marginBottom: '2px' }}>Rowan Row</h6>
+                  <h6 style={{ marginBottom: '2px' }}>
+                    {state ? state.name : 'Loading...'}
+                  </h6>
                   <p>
                     • 🇬🇧~rowanrow.com
                     <br />
@@ -292,15 +304,17 @@ const ProfileScreen = () => {
                       >
                         <div className='container'>
                           <div className='row photos' data-bss-baguettebox>
-                            <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                              <a href='desk.jpg'>
-                                <img
-                                  alt=''
-                                  className='img-fluid'
-                                  src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                />
-                              </a>
-                            </div>
+                            {myPosts.map((post) => (
+                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
+                                <a href='desk.jpg'>
+                                  <img
+                                    alt=''
+                                    className='img-fluid'
+                                    src={post.image}
+                                  />
+                                </a>
+                              </div>
+                            ))}
                             <div className='col-sm-6 col-md-4 col-lg-3 item'>
                               <a href='building.jpg'>
                                 <img
