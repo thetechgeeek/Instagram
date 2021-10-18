@@ -1,7 +1,57 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../App';
 
 const Header = () => {
+  const { state, dispatch } = useContext(UserContext);
+  const renderList = () => {
+    if (state) {
+      return [
+        <Link className='dropdown-item' to={`/profile`}>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='1em'
+            height='1em'
+            fill='currentColor'
+            viewBox='0 0 16 16'
+            className='bi bi-person-circle'
+            style={{ fontSize: '16px', marginRight: '10px' }}
+          >
+            <path d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'></path>
+            <path
+              fill-rule='evenodd'
+              d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'
+            ></path>
+          </svg>
+          Profile
+        </Link>,
+        <Link className='dropdown-item' to={'/profile/edit'}>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            width='1em'
+            height='1em'
+            fill='currentColor'
+            viewBox='0 0 16 16'
+            class='bi bi-gear-wide'
+            style={{ fontSize: '16px', marginRight: '10px' }}
+          >
+            <path d='M8.932.727c-.243-.97-1.62-.97-1.864 0l-.071.286a.96.96 0 0 1-1.622.434l-.205-.211c-.695-.719-1.888-.03-1.613.931l.08.284a.96.96 0 0 1-1.186 1.187l-.284-.081c-.96-.275-1.65.918-.931 1.613l.211.205a.96.96 0 0 1-.434 1.622l-.286.071c-.97.243-.97 1.62 0 1.864l.286.071a.96.96 0 0 1 .434 1.622l-.211.205c-.719.695-.03 1.888.931 1.613l.284-.08a.96.96 0 0 1 1.187 1.187l-.081.283c-.275.96.918 1.65 1.613.931l.205-.211a.96.96 0 0 1 1.622.434l.071.286c.243.97 1.62.97 1.864 0l.071-.286a.96.96 0 0 1 1.622-.434l.205.211c.695.719 1.888.03 1.613-.931l-.08-.284a.96.96 0 0 1 1.187-1.187l.283.081c.96.275 1.65-.918.931-1.613l-.211-.205a.96.96 0 0 1 .434-1.622l.286-.071c.97-.243.97-1.62 0-1.864l-.286-.071a.96.96 0 0 1-.434-1.622l.211-.205c.719-.695.03-1.888-.931-1.613l-.284.08a.96.96 0 0 1-1.187-1.186l.081-.284c.275-.96-.918-1.65-1.613-.931l-.205.211a.96.96 0 0 1-1.622-.434L8.932.727zM8 12.997a4.998 4.998 0 1 1 0-9.995 4.998 4.998 0 0 1 0 9.996z'></path>
+          </svg>
+          Settings
+        </Link>,
+        <hr style={{ marginBottom: '0px', marginTop: '0px' }} />,
+        <a className='dropdown-item' href='#'>
+          Log out
+        </a>,
+      ];
+    } else {
+      return [
+        <Link to={'/login'}>Login</Link>,
+        <Link to={'/register'}>Sign Up</Link>,
+      ];
+    }
+  };
+
   return (
     <>
       <nav
@@ -20,7 +70,7 @@ const Header = () => {
         }}
       >
         <div className='container'>
-          <Link to={`/`}>
+          <Link to={state ? `/` : 'login'}>
             <img
               className='navbar-brand'
               src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png'
@@ -131,42 +181,7 @@ const Header = () => {
                 </svg>
               </button>
               <div className='dropdown-menu' style={{ paddingBottom: '0px' }}>
-                <Link className='dropdown-item' to={`/profile`}>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='1em'
-                    height='1em'
-                    fill='currentColor'
-                    viewBox='0 0 16 16'
-                    className='bi bi-person-circle'
-                    style={{ fontSize: '16px', marginRight: '10px' }}
-                  >
-                    <path d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'></path>
-                    <path
-                      fill-rule='evenodd'
-                      d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'
-                    ></path>
-                  </svg>
-                  Profile
-                </Link>
-                <Link className='dropdown-item' to={'/profile/edit'}>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='1em'
-                    height='1em'
-                    fill='currentColor'
-                    viewBox='0 0 16 16'
-                    class='bi bi-gear-wide'
-                    style={{ fontSize: '16px', marginRight: '10px' }}
-                  >
-                    <path d='M8.932.727c-.243-.97-1.62-.97-1.864 0l-.071.286a.96.96 0 0 1-1.622.434l-.205-.211c-.695-.719-1.888-.03-1.613.931l.08.284a.96.96 0 0 1-1.186 1.187l-.284-.081c-.96-.275-1.65.918-.931 1.613l.211.205a.96.96 0 0 1-.434 1.622l-.286.071c-.97.243-.97 1.62 0 1.864l.286.071a.96.96 0 0 1 .434 1.622l-.211.205c-.719.695-.03 1.888.931 1.613l.284-.08a.96.96 0 0 1 1.187 1.187l-.081.283c-.275.96.918 1.65 1.613.931l.205-.211a.96.96 0 0 1 1.622.434l.071.286c.243.97 1.62.97 1.864 0l.071-.286a.96.96 0 0 1 1.622-.434l.205.211c.695.719 1.888.03 1.613-.931l-.08-.284a.96.96 0 0 1 1.187-1.187l.283.081c.96.275 1.65-.918.931-1.613l-.211-.205a.96.96 0 0 1 .434-1.622l.286-.071c.97-.243.97-1.62 0-1.864l-.286-.071a.96.96 0 0 1-.434-1.622l.211-.205c.719-.695.03-1.888-.931-1.613l-.284.08a.96.96 0 0 1-1.187-1.186l.081-.284c.275-.96-.918-1.65-1.613-.931l-.205.211a.96.96 0 0 1-1.622-.434L8.932.727zM8 12.997a4.998 4.998 0 1 1 0-9.995 4.998 4.998 0 0 1 0 9.996z'></path>
-                  </svg>
-                  Settings
-                </Link>
-                <hr style={{ marginBottom: '0px', marginTop: '0px' }} />
-                <a className='dropdown-item' href='#'>
-                  Log out
-                </a>
+                {renderList()}
               </div>
             </div>
           </div>
@@ -236,23 +251,25 @@ const Header = () => {
               <path d='m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z' />
             </svg>
           </button>
-          <button className='btn' type='button'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='1em'
-              height='1em'
-              fill='currentColor'
-              viewBox='0 0 16 16'
-              className='bi bi-person-circle'
-              style={{ fontSize: '25px' }}
-            >
-              <path d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z' />
-              <path
-                fillRule='evenodd'
-                d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'
-              />
-            </svg>
-          </button>
+          <Link to={'/profile'}>
+            <button className='btn' type='button'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='1em'
+                height='1em'
+                fill='currentColor'
+                viewBox='0 0 16 16'
+                className='bi bi-person-circle'
+                style={{ fontSize: '25px' }}
+              >
+                <path d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z' />
+                <path
+                  fillRule='evenodd'
+                  d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'
+                />
+              </svg>
+            </button>
+          </Link>
         </div>
       </nav>
     </>
