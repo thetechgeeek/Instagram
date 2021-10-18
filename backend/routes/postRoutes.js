@@ -17,8 +17,8 @@ router.get('/allposts', authMiddleware, (req, res) => {
 router.get('/myposts', authMiddleware, (req, res) => {
   Post.find({ postedBy: req.user._id })
     .populate('postedBy', '_id name username')
-    .then((myPost) => {
-      res.json({ myPost });
+    .then((myPosts) => {
+      res.json({ myPosts });
     })
     .catch((err) => {
       console.log(err);
