@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../App';
 
 const Header = () => {
   const { state, dispatch } = useContext(UserContext);
+  const history = useHistory();
   const renderList = () => {
     if (state) {
       return [
@@ -40,9 +41,16 @@ const Header = () => {
           Settings
         </Link>,
         <hr style={{ marginBottom: '0px', marginTop: '0px' }} />,
-        <a className='dropdown-item' href='#'>
+        <button
+          className='dropdown-item'
+          onClick={() => {
+            localStorage.clear();
+            dispatch({ type: 'CLEAR' });
+            history.push('/login');
+          }}
+        >
           Log out
-        </a>,
+        </button>,
       ];
     } else {
       return [
