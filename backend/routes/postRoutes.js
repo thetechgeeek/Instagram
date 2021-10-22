@@ -6,7 +6,7 @@ import { authMiddleware } from '../middleware/authMiddleware.js';
 router.get('/allposts', authMiddleware, (req, res) => {
   Post.find()
     .populate('postedBy', '_id name username')
-    .populate('comments.postedBy', '_id name')
+    .populate('comments.postedBy', '_id username')
     .then((posts) => {
       res.json({ posts });
     })
@@ -97,12 +97,30 @@ router.put('/comment', authMiddleware, (req, res) => {
     { new: true }
   )
     .populate('postedBy', '_id name username')
-    .populate('comments.postedBy', '_id name')
+    .populate('comments.postedBy', '_id username')
     .exec((err, result) => {
       if (err) {
         return res.status(422).json({ error: err });
       } else {
         res.json(result);
+      }
+    });
+});
+
+router.delete('/deletepost/:id', authMiddleware, (req, res) => {
+  Post.findOne({ _id: req.params.id })
+    .populate('postedBy', '_id')
+    .exec((err, post) => {
+      if (err || !post) {
+        return res.status(422).json({ error: err });
+      }
+      if (post.postedBy._id.toString() === req.user._id.toString()) {
+        post
+          .remove()
+          .then((result) => res.json(result))
+          .catch((err) => {
+            console.log(err);
+          });
       }
     });
 });

@@ -97,6 +97,23 @@ const HomeScreen = () => {
         console.log(err);
       });
   };
+
+  const deletePost = (postId) => {
+    fetch(`/deletepost/${postId}`, {
+      method: 'delete',
+      headers: { Authorization: 'Bearer ' + localStorage.getItem('jwt') },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.filter((item) => {
+          return item._id !== result._id;
+        });
+        setData(newData);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <Header />
@@ -178,9 +195,15 @@ const HomeScreen = () => {
                           </svg>
                         </button>
                         <div className='dropdown-menu'>
-                          <a className='dropdown-item' href='/editProfile'>
-                            First Item
-                          </a>
+                          {post.postedBy._id === state._id && (
+                            <a
+                              type='button'
+                              className='dropdown-item'
+                              onClick={() => deletePost(post._id)}
+                            >
+                              Delete Post
+                            </a>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -341,7 +364,7 @@ const HomeScreen = () => {
                       {post.comments.map((comment) => (
                         <div>
                           <span style={{ fontWeight: ' bold' }}>
-                            {comment.postedBy.name}
+                            {comment.postedBy.username}
                           </span>
                           <span style={{ marginLeft: ' 5px' }}>
                             {comment.text}
