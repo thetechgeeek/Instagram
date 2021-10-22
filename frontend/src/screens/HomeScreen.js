@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Post from '../components/Post';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../App';
 
@@ -17,7 +16,7 @@ const HomeScreen = () => {
         console.log(result);
         setData(result.posts);
       });
-  }, [data]);
+  }, []);
   const likePost = (id) => {
     fetch('/like', {
       method: 'put',
@@ -30,7 +29,16 @@ const HomeScreen = () => {
       }),
     })
       .then((res) => res.json())
-      .then((result) => console.log(result));
+      .then((result) => {
+        const newData = data.map((item) => {
+          if (item._id === result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      });
   };
 
   const unlikePost = (id) => {
@@ -45,7 +53,49 @@ const HomeScreen = () => {
       }),
     })
       .then((res) => res.json())
-      .then((result) => console.log(result));
+      .then((result) => {
+        //   console.log(result)
+        const newData = data.map((item) => {
+          if (item._id === result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const makeComment = (text, postId) => {
+    fetch('/comment', {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+      body: JSON.stringify({
+        postId,
+        text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.map((item) => {
+          if (item._id === result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <>
@@ -77,6 +127,7 @@ const HomeScreen = () => {
                       }}
                     >
                       <img
+                        alt=''
                         className='rounded-circle'
                         style={{ height: ' 32px', width: ' 32px' }}
                         src={`${post.image}`}
@@ -127,14 +178,8 @@ const HomeScreen = () => {
                           </svg>
                         </button>
                         <div className='dropdown-menu'>
-                          <a className='dropdown-item' href='#'>
+                          <a className='dropdown-item' href='/editProfile'>
                             First Item
-                          </a>
-                          <a className='dropdown-item' href='#'>
-                            Second Item
-                          </a>
-                          <a className='dropdown-item' href='#'>
-                            Third Item
                           </a>
                         </div>
                       </div>
@@ -143,6 +188,7 @@ const HomeScreen = () => {
                 </div>
                 <Link to={`/post/${post._id}`}>
                   <img
+                    alt=''
                     className='card-img w-100 d-block border rounded-0'
                     src={post.image}
                     style={{
@@ -158,6 +204,7 @@ const HomeScreen = () => {
                       paddingLeft: ' 15px',
                       paddingRight: ' 15px',
                       paddingTop: '10px',
+                      paddingBottom: '10px',
                       fontSize: ' 24px',
                       borderTop: ' 1px solid rgb(219,219,219)',
                       marginTop: '0px',
@@ -199,17 +246,19 @@ const HomeScreen = () => {
                         </svg>
                       )}
 
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width='1em'
-                        height='1em'
-                        fill='currentColor'
-                        viewBox='0 0 16 16'
-                        className='bi bi-chat'
-                        style={{ marginRight: ' 16px' }}
-                      >
-                        <path d='M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z'></path>
-                      </svg>
+                      <label for={`comment-focus-${post._id}`}>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          width='1em'
+                          height='1em'
+                          fill='currentColor'
+                          viewBox='0 0 16 16'
+                          className='bi bi-chat'
+                          style={{ marginRight: ' 16px' }}
+                        >
+                          <path d='M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z'></path>
+                        </svg>
+                      </label>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         width='1em'
@@ -275,7 +324,6 @@ const HomeScreen = () => {
                         marginBottom: '-5px',
                         marginTop: '-5px',
                         paddingBottom: ' 0px',
-                        paddingBottom: ' 0px',
                         color: ' rgb(142,142,142)',
                         fontSize: ' 14px',
                         background: '#ffffff',
@@ -290,13 +338,16 @@ const HomeScreen = () => {
                         paddingLeft: ' 0px',
                       }}
                     >
-                      {/* */}
-                      {/* {post.comments.map((comment) => (
-                      <>
-                        <span style={{ fontWeight: ' bold' }}>{comment.user}</span>
-                        <span style={{ marginLeft: ' 5px' }}>{comment.data}</span>
-                      </>
-                    ))} */}
+                      {post.comments.map((comment) => (
+                        <div>
+                          <span style={{ fontWeight: ' bold' }}>
+                            {comment.postedBy.name}
+                          </span>
+                          <span style={{ marginLeft: ' 5px' }}>
+                            {comment.text}
+                          </span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                   <div
@@ -345,24 +396,33 @@ const HomeScreen = () => {
                         <path d='M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z'></path>
                       </svg>
                     </span>
-                    <input
-                      type='text'
-                      className='shadow-none form-control'
-                      style={{
-                        borderStyle: ' none',
-                        borderTopStyle: ' none',
-                        borderTopsColor: ' rgb(142,142,142)',
-                        fontSize: ' 16px',
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        console.log(e);
+                        makeComment(e.target[0].value, post._id);
                       }}
-                      placeholder='Add a comment...'
-                    />
-                    <button
-                      className='btn'
-                      type='button'
-                      style={{ background: ' #ffffff', fontSize: ' 16px' }}
                     >
-                      Post
-                    </button>
+                      <input
+                        type='text'
+                        id={`comment-focus-${post._id}`}
+                        className='shadow-none form-control'
+                        style={{
+                          borderStyle: ' none',
+                          borderTopStyle: ' none',
+                          borderTopsColor: ' rgb(142,142,142)',
+                          fontSize: ' 16px',
+                        }}
+                        placeholder='Add a comment...'
+                      />
+                      <button
+                        className='btn'
+                        type='button'
+                        style={{ background: ' #ffffff', fontSize: ' 16px' }}
+                      >
+                        Post
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
