@@ -3,13 +3,14 @@ import Footer from '../components/Footer';
 import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../App';
 const LoginScreen = () => {
-  const { state, dispatch } = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const PostData = () => {
     if (
+      // eslint-disable-next-line
       !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
         email
       )
@@ -48,6 +49,7 @@ const LoginScreen = () => {
       >
         <div>
           <img
+            alt=''
             className='d-none d-md-block'
             src='https://i.ibb.co/5rWN32Q/welcome.png'
             style={{ height: ' 618px', marginRight: ' 29px' }}
@@ -66,6 +68,7 @@ const LoginScreen = () => {
             }}
           >
             <img
+              alt=''
               src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png'
               style={{
                 width: ' 175px',
@@ -223,12 +226,14 @@ const LoginScreen = () => {
               <p>Get the app.</p>
               <span>
                 <img
+                  alt=''
                   src='https://www.instagram.com/static/images/appstore-install-badges/badge_ios_english-en.png/180ae7a0bcf7.png'
                   style={{ width: ' 136px' }}
                 />
               </span>
               <span style={{ marginLeft: ' 5px' }}>
                 <img
+                  alt=''
                   src='https://www.instagram.com/static/images/appstore-install-badges/badge_android_english-en.png/e9cd846dc748.png'
                   style={{ width: ' 136px' }}
                 />

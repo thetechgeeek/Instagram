@@ -132,14 +132,8 @@ const ProfileScreen = () => {
                       </svg>
                     </button>
                     <div className='dropdown-menu'>
-                      <a className='dropdown-item' href='#'>
+                      <a className='dropdown-item' href={`/editProfile`}>
                         First Item
-                      </a>
-                      <a className='dropdown-item' href='#'>
-                        Second Item
-                      </a>
-                      <a className='dropdown-item' href='#'>
-                        Third Item
                       </a>
                     </div>
                   </div>

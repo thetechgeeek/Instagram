@@ -80,6 +80,7 @@ const Header = () => {
         <div className='container'>
           <Link to={state ? `/` : 'login'}>
             <img
+              alt=''
               className='navbar-brand'
               src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png'
               style={{ width: '110px' }}

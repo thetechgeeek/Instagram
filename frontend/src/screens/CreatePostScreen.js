@@ -36,7 +36,7 @@ const CreatePostScreen = () => {
           console.log(err);
         });
     }
-  }, [url]);
+  }, [url, caption, history, location]);
   const postDetail = () => {
     const data = new FormData();
     data.append('file', image);
