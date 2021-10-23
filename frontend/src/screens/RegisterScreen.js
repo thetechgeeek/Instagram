@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -8,8 +8,32 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [image, setImage] = useState('');
+  const [url, setUrl] = useState(undefined);
 
-  const PostData = () => {
+  useEffect(() => {
+    if (url) {
+      uploadFields();
+    }
+  }, [url]);
+  const uploadProfilePic = () => {
+    const data = new FormData();
+    data.append('file', image);
+    data.append('upload_preset', 'instagram');
+    data.append('cloud_name', 'thetechgeeek');
+    fetch('	https://api.cloudinary.com/v1_1/thetechgeeek/image/upload', {
+      method: 'post',
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUrl(data.url);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const uploadFields = () => {
     // eslint-disable-next-line
     if (
       // eslint-disable-next-line
@@ -28,6 +52,7 @@ const RegisterScreen = () => {
         email,
         username,
         password,
+        image: url,
       }),
     })
       .then((res) => res.json())
@@ -40,6 +65,13 @@ const RegisterScreen = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+  const PostData = () => {
+    if (image) {
+      uploadProfilePic();
+    } else {
+      uploadFields();
+    }
   };
   return (
     <>
@@ -183,6 +215,38 @@ const RegisterScreen = () => {
                 setPassword(e.target.value);
               }}
             />
+            <div className='form-group row'>
+              <label
+                htmlFor='formFileSm'
+                class='form-label'
+                style={{
+                  marginBottom: '-3px',
+                  marginTop: '10px',
+                  marginLeft: '30px',
+                  fontSize: '0.8rem',
+                  fontWeight: '300',
+                  textAlign: 'left',
+                }}
+              >
+                Upload a profile picture
+              </label>
+              <input
+                style={{
+                  color: ' rgb(142,142,142)',
+                  background: ' rgb(250,250,250)',
+                  borderStyle: ' solid',
+                  borderColor: ' rgb(219,219,219)',
+                  fontSize: ' 12px',
+                  margin: ' auto',
+                  marginTop: ' 5px',
+                  width: ' 258px',
+                }}
+                type='file'
+                className='shadow-none form-control form-control-sm'
+                id='photo'
+                onChange={(e) => setImage(e.target.files[0])}
+              />
+            </div>
             <button
               className='btn btn-primary shadow-none'
               type='button'

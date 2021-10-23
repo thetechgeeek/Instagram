@@ -159,7 +159,7 @@ const HomeScreen = () => {
                             alt=''
                             className='rounded-circle'
                             style={{ height: ' 32px', width: ' 32px' }}
-                            src={`${post.image}`}
+                            src={`${post.postedBy.image}`}
                           />
                         </Link>
                       </div>

@@ -5,7 +5,7 @@ import { authMiddleware } from '../middleware/authMiddleware.js';
 
 router.get('/allposts', authMiddleware, (req, res) => {
   Post.find()
-    .populate('postedBy', '_id name username')
+    .populate('postedBy', '_id name username image')
     .populate('comments.postedBy', '_id username')
     .then((posts) => {
       res.json({ posts });
@@ -17,7 +17,7 @@ router.get('/allposts', authMiddleware, (req, res) => {
 
 router.get('/followerPosts', authMiddleware, (req, res) => {
   Post.find({ postedBy: { $in: req.user.following } })
-    .populate('postedBy', '_id name username')
+    .populate('postedBy', '_id name username image')
     .populate('comments.postedBy', '_id username')
     .then((posts) => {
       res.json({ posts });
@@ -29,7 +29,7 @@ router.get('/followerPosts', authMiddleware, (req, res) => {
 
 router.get('/myposts', authMiddleware, (req, res) => {
   Post.find({ postedBy: req.user._id })
-    .populate('postedBy', '_id name username')
+    .populate('postedBy', '_id name username image')
     .then((myPosts) => {
       res.json({ myPosts });
     })
@@ -68,7 +68,7 @@ router.put('/like', authMiddleware, (req, res) => {
     },
     { new: true }
   )
-    .populate('postedBy', '_id name username')
+    .populate('postedBy', '_id name username image')
     .populate('comments.postedBy', '_id name')
     .exec((err, result) => {
       if (err) {
@@ -87,7 +87,7 @@ router.put('/unlike', authMiddleware, (req, res) => {
     },
     { new: true }
   )
-    .populate('postedBy', '_id name username')
+    .populate('postedBy', '_id name username image')
     .populate('comments.postedBy', '_id name')
     .exec((err, result) => {
       if (err) {
@@ -110,7 +110,7 @@ router.put('/comment', authMiddleware, (req, res) => {
     },
     { new: true }
   )
-    .populate('postedBy', '_id name username')
+    .populate('postedBy', '_id name username image')
     .populate('comments.postedBy', '_id username')
     .exec((err, result) => {
       if (err) {

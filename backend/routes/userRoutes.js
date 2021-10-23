@@ -11,7 +11,7 @@ router.get('/protected', authMiddleware, (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { name, username, email, password, image } = req.body;
   if (!name || !username || !email || !password) {
     return res
       .status(422)
@@ -29,6 +29,7 @@ router.post('/register', (req, res) => {
           username,
           email,
           password: hashedPassword,
+          image: image,
         });
         user
           .save()
@@ -60,11 +61,11 @@ router.post('/login', (req, res) => {
         .then((doMatch) => {
           if (doMatch) {
             const token = jwt.sign({ _id: SavedUser }, process.env.JWT_SECRET);
-            const { _id, name, email, username, followers, following } =
+            const { _id, name, email, username, followers, following, image } =
               SavedUser;
             res.json({
               token,
-              user: { _id, name, email, username, followers, following },
+              user: { _id, name, email, username, followers, following, image },
             });
           } else {
             return res.status(422).json({ error: 'Invalid Email/Password.' });
