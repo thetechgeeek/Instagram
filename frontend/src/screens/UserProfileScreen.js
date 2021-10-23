@@ -6,8 +6,12 @@ import { useParams } from 'react-router';
 import Loader from '../components/loader';
 const ProfileScreen = () => {
   const [userProfile, setUserProfile] = useState(null);
-  const { state } = useContext(UserContext);
+
+  const { state, dispatch } = useContext(UserContext);
   const { userId } = useParams();
+  const [followButton, setFollowButton] = useState(
+    state ? !state.following.includes(userId) : true
+  );
   useEffect(() => {
     fetch(`/user/${userId}`, {
       headers: { Authorization: 'Bearer ' + localStorage.getItem('jwt') },
@@ -17,14 +21,157 @@ const ProfileScreen = () => {
         setUserProfile(result);
       });
   }, []);
+
+  const followUser = () => {
+    fetch('/follow', {
+      method: 'put',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+      body: JSON.stringify({ followId: userId }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        dispatch({
+          type: 'UPDATE',
+          payload: { following: data.following, followers: data.followers },
+        });
+        localStorage.setItem('user', JSON.stringify(data));
+        setUserProfile((prevState) => {
+          return {
+            ...prevState,
+            user: {
+              ...prevState.user,
+              followers: [...prevState.user.followers, data._id],
+            },
+          };
+        });
+      });
+    setFollowButton(false);
+  };
+  const unfollowUser = () => {
+    fetch('/unfollow', {
+      method: 'put',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+      body: JSON.stringify({ unfollowId: userId }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        dispatch({
+          type: 'UPDATE',
+          payload: { following: data.following, followers: data.following },
+        });
+        localStorage.setItem('user', JSON.stringify(data));
+        setUserProfile((prevState) => {
+          const newFollower = prevState.user.followers.filter(
+            (item) => item !== data._id
+          );
+
+          return {
+            ...prevState,
+            user: {
+              ...prevState.user,
+              followers: newFollower,
+            },
+          };
+        });
+        setFollowButton(true);
+      });
+  };
   return (
     <>
       <Header />
+
       {userProfile ? (
         <div
           className='container text-center flex-row flex-grow-1 justify-content-center'
           style={{ marginTop: '70px', height: '70vh' }}
         >
+          <button type='button' className='btn btn-primary' id='liveToastBtn'>
+            Show live toast
+          </button>
+
+          <div
+            className='position-fixed bottom-0 end-0 p-3'
+            style={{ zIndex: '11' }}
+          >
+            <div
+              id='liveToast'
+              className='toast hide'
+              role='alert'
+              aria-live='assertive'
+              aria-atomic='true'
+            >
+              <div className='toast-header'>
+                <img src='...' className='rounded me-2' alt='...' />
+                <strong className='me-auto'>Bootstrap</strong>
+                <small>11 mins ago</small>
+                <button
+                  type='button'
+                  className='btn-close'
+                  data-bs-dismiss='toast'
+                  aria-label='Close'
+                ></button>
+              </div>
+              <div className='toast-body'>
+                Hello, world! This is a toast message.
+              </div>
+            </div>
+          </div>
+          <button
+            type='button'
+            className='btn btn-primary'
+            data-bs-toggle='modal'
+            data-bs-target='#exampleModal'
+          >
+            Launch demo modal
+          </button>
+
+          <div
+            className='modal fade'
+            id='exampleModal'
+            tabindex='-1'
+            role='dialog'
+            aria-labelledby='exampleModalLabel'
+            aria-hidden='true'
+          >
+            <div className='modal-dialog' role='document'>
+              <div className='modal-content'>
+                <div className='modal-header'>
+                  <h5 className='modal-title' id='exampleModalLabel'>
+                    Modal title
+                  </h5>
+                  <button
+                    type='button'
+                    className='close'
+                    data-dismiss='modal'
+                    aria-label='Close'
+                  >
+                    <span aria-hidden='true'>&times;</span>
+                  </button>
+                </div>
+                <div className='modal-body'>...</div>
+                <div className='modal-footer'>
+                  <button
+                    type='button'
+                    className='btn btn-secondary'
+                    data-bs-dismiss='modal'
+                  >
+                    Close
+                  </button>
+                  <button type='button' className='btn btn-primary'>
+                    Save changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <div
             className='row d-flex flex-column'
             style={{ maxWidth: '953px', margin: 'auto', marginTop: '15px' }}
@@ -63,7 +210,7 @@ const ProfileScreen = () => {
                       </h2>
                     </div>
                     <div>
-                      <button
+                      {/* <button
                         className='btn btn-primary shadow-none'
                         type='button'
                         style={{
@@ -78,7 +225,32 @@ const ProfileScreen = () => {
                         }}
                       >
                         Message
-                      </button>
+                      </button> */}
+                      {followButton ? (
+                        <button
+                          className='btn btn-primary shadow-none'
+                          style={{
+                            marginRight: '10px',
+                            paddingTop: '2px',
+                            paddingBottom: '2px',
+                          }}
+                          onClick={() => followUser()}
+                        >
+                          Follow
+                        </button>
+                      ) : (
+                        <button
+                          className='btn btn-primary shadow-none'
+                          style={{
+                            marginRight: '10px',
+                            paddingTop: '2px',
+                            paddingBottom: '2px',
+                          }}
+                          onClick={() => unfollowUser()}
+                        >
+                          Unfollow
+                        </button>
+                      )}
                     </div>
                     <div>
                       <button
@@ -150,8 +322,10 @@ const ProfileScreen = () => {
                     <span style={{ marginRight: '10px' }}>
                       {userProfile.posts.length} posts
                     </span>
-                    <span style={{ marginRight: '10px' }}>1.4m followers</span>
-                    <span>2 following</span>
+                    <span style={{ marginRight: '10px' }}>
+                      {userProfile.user.followers.length} followers
+                    </span>
+                    <span>{userProfile.user.following.length} following</span>
                   </div>
                   <div style={{ textAlign: 'left' }}>
                     <h6 style={{ marginBottom: '2px' }}>
@@ -193,10 +367,14 @@ const ProfileScreen = () => {
                       </span>
                     </div>
                     <div>
-                      <span className='d-inline-block'>1.4m followers</span>
+                      <span className='d-inline-block'>
+                        {userProfile.user.followers.length} followers
+                      </span>
                     </div>
                     <div>
-                      <span className='d-inline-block'>2 following</span>
+                      <span className='d-inline-block'>
+                        {userProfile.user.following.length} following
+                      </span>
                     </div>
                   </div>
                 </div>
