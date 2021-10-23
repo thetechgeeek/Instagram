@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
+import ExploreScreen from './screens/ExploreScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import UserProfileScreen from './screens/UserProfileScreen';
 import CreatePostScreen from './screens/CreatePostScreen';
@@ -24,6 +25,7 @@ const Routing = () => {
   return (
     <>
       <Route path='/' component={HomeScreen} exact />
+      <Route path='/explore' component={ExploreScreen} exact />
       <Route path='/register' component={RegisterScreen} />
       <Route path='/login' component={LoginScreen} />
       <Route path='/profile' component={ProfileScreen} exact />

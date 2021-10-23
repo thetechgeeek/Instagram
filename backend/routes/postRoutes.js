@@ -15,6 +15,18 @@ router.get('/allposts', authMiddleware, (req, res) => {
     });
 });
 
+router.get('/followerPosts', authMiddleware, (req, res) => {
+  Post.find({ postedBy: { $in: req.user.following } })
+    .populate('postedBy', '_id name username')
+    .populate('comments.postedBy', '_id username')
+    .then((posts) => {
+      res.json({ posts });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 router.get('/myposts', authMiddleware, (req, res) => {
   Post.find({ postedBy: req.user._id })
     .populate('postedBy', '_id name username')
@@ -25,6 +37,7 @@ router.get('/myposts', authMiddleware, (req, res) => {
       console.log(err);
     });
 });
+
 router.post('/createpost', authMiddleware, (req, res) => {
   const { location, caption, image } = req.body;
   if (!location || !caption || !image) {
@@ -65,6 +78,7 @@ router.put('/like', authMiddleware, (req, res) => {
       }
     });
 });
+
 router.put('/unlike', authMiddleware, (req, res) => {
   Post.findByIdAndUpdate(
     req.body.postId,

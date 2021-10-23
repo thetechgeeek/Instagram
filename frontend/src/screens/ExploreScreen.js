@@ -10,7 +10,7 @@ const HomeScreen = () => {
   const { state } = useContext(UserContext);
 
   useEffect(() => {
-    fetch('/followerPosts', {
+    fetch('/allposts', {
       headers: { Authorization: 'Bearer ' + localStorage.getItem('jwt') },
     })
       .then((res) => res.json())
