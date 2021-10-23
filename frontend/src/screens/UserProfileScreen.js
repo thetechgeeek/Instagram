@@ -20,7 +20,8 @@ const ProfileScreen = () => {
       .then((result) => {
         setUserProfile(result);
       });
-  }, []);
+    setFollowButton(state ? !state.following.includes(userId) : true);
+  }, [state]);
 
   const followUser = () => {
     fetch('/follow', {
