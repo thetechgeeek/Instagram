@@ -499,7 +499,7 @@ const HomeScreen = () => {
                       alt=''
                       className='rounded-circle'
                       style={{ height: ' 56px', width: ' 56px' }}
-                      src='https://media-exp1.licdn.com/dms/image/C4E0BAQHikN6EXPd23Q/company-logo_200_200/0/1595359131127?e=2159024400&v=beta&t=S5MNjBDjiH433VCWzjPeiopNDhxGwmfcMk4Zf1P_m_s'
+                      src={state ? state.image : <Loader />}
                     />
                   </div>
                   <div
@@ -514,17 +514,17 @@ const HomeScreen = () => {
                         marginTop: ' 10px',
                       }}
                     >
-                      {state ? state.username : 'Loading...'}
+                      {state ? state.username : <Loader />}
                     </p>
                     <p style={{ marginTop: ' 0px', fontSize: ' 12px' }}>
-                      {state ? state.name : 'Loading...'}
+                      {state ? state.name : <Loader />}
                     </p>
                   </div>
                   <div className='col-3 d-flex flex-row justify-content-start align-items-center'>
                     <a
                       className='btn'
                       type='button'
-                      href='/profile/edit'
+                      href='/editprofile'
                       style={{ background: ' #ffffff', fontSize: ' 16px' }}
                     >
                       Edit
@@ -532,7 +532,6 @@ const HomeScreen = () => {
                   </div>
                 </div>
               </div>
-              {/*  */}
               <div>
                 <div style={{ marginTop: '20px' }}>
                   <div
