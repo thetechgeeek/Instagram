@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Toast from 'react-bootstrap/Toast';
 
 const CreatePostScreen = () => {
   const history = useHistory();
   const [location, setLocation] = useState('');
   const [caption, setCaption] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(undefined);
   const [url, setUrl] = useState('');
+  const [show, setShow] = useState(false);
+  const [tempData, setTempData] = useState('');
+
   useEffect(() => {
     if (url) {
       fetch('/createpost', {
@@ -27,7 +31,8 @@ const CreatePostScreen = () => {
         .then((data) => {
           console.log(data);
           if (data.error) {
-            console.log(data.error);
+            setTempData(data.error);
+            setShow(true);
           } else {
             history.push('/');
           }
@@ -72,7 +77,27 @@ const CreatePostScreen = () => {
           style={{ fontWeight: '200', marginTop: '15px', marginBottom: '50px' }}
         >
           Create Post
-        </h2>
+        </h2>{' '}
+        <Toast
+          style={{
+            fontSize: '0.7rem',
+            width: '258px',
+            zIndex: '100',
+            position: 'absolute',
+            marginTop: '65px',
+            marginLeft: '30px',
+          }}
+          bg='danger'
+          onClose={() => setShow(false)}
+          show={show}
+          delay={3000}
+          position='top-center'
+          autohide
+        >
+          <Toast.Header>
+            <strong className='me-auto'>{tempData}</strong>
+          </Toast.Header>
+        </Toast>
         <div className='form-group row' style={{ marginBottom: '15px' }}>
           <label htmlFor='photo' className='col-sm-2 col-form-label'>
             Upload a picture for your post

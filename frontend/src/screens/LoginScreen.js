@@ -2,11 +2,15 @@ import React, { useState, useContext } from 'react';
 import Footer from '../components/Footer';
 import { Link, useHistory } from 'react-router-dom';
 import { UserContext } from '../App';
+import Toast from 'react-bootstrap/Toast';
+
 const LoginScreen = () => {
   const { dispatch } = useContext(UserContext);
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [show, setShow] = useState(false);
+  const [tempData, setTempData] = useState('');
 
   const PostData = () => {
     if (
@@ -15,7 +19,8 @@ const LoginScreen = () => {
         email
       )
     ) {
-      console.log('Invalid Email.');
+      setTempData('Invalid Email.');
+      setShow(true);
       return;
     }
     fetch('/login', {
@@ -30,10 +35,14 @@ const LoginScreen = () => {
       .then((data) => {
         console.log(data);
         if (data.error) {
+          setTempData(data.error);
+          setShow(true);
         } else {
           localStorage.setItem('jwt', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
           dispatch({ type: 'USER', payload: data.user });
+          setTempData('Successfully Logged In.');
+          setShow(true);
           history.push('/');
         }
       })
@@ -67,6 +76,26 @@ const LoginScreen = () => {
               height: ' 377.8px',
             }}
           >
+            <Toast
+              style={{
+                fontSize: '0.7rem',
+                width: '258px',
+                zIndex: '100',
+                position: 'absolute',
+                marginTop: '65px',
+                marginLeft: '30px',
+              }}
+              bg='danger'
+              onClose={() => setShow(false)}
+              show={show}
+              delay={3000}
+              position='top-center'
+              autohide
+            >
+              <Toast.Header>
+                <strong className='me-auto'>{tempData}</strong>
+              </Toast.Header>
+            </Toast>
             <img
               alt=''
               src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1200px-Instagram_logo.svg.png'
@@ -76,7 +105,6 @@ const LoginScreen = () => {
                 marginBottom: ' 30px',
               }}
             />
-
             <input
               type='text'
               className='shadow-none form-control'

@@ -104,71 +104,15 @@ const ProfileScreen = () => {
                           paddingBottom: '2px',
                         }}
                       >
-                        Message
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        className='btn btn-primary shadow-none'
-                        type='button'
-                        style={{
-                          color: 'rgb(0,0,0)',
-                          background: 'rgb(255,255,255)',
-                          borderStyle: 'solid',
-                          borderColor: 'rgb(219,219,219)',
-                          borderTopStyle: 'solid',
-                          marginRight: '10px',
-                          paddingTop: '2px',
-                          paddingBottom: '2px',
-                        }}
-                      >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          width='1em'
-                          height='1em'
-                          fill='currentColor'
-                          viewBox='0 0 16 16'
-                          className='bi bi-person-check'
+                        <Link
+                          style={{ textDecoration: 'none', color: 'black' }}
+                          to={'/editprofile'}
                         >
-                          <path d='M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z' />
-                          <path
-                            fillRule='evenodd'
-                            d='M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z'
-                          />
-                        </svg>
+                          Edit Profile
+                        </Link>
                       </button>
                     </div>
-
-                    <div className='dropdown'>
-                      <button
-                        className='btn btn-primary shadow-none'
-                        aria-expanded='false'
-                        data-bs-toggle='dropdown'
-                        type='button'
-                        style={{
-                          color: 'rgb(0,0,0)',
-                          background: 'rgb(255,255,255)',
-                          borderStyle: 'none',
-                        }}
-                      >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          width='1em'
-                          height='1em'
-                          fill='currentColor'
-                          viewBox='0 0 16 16'
-                          className='bi bi-three-dots'
-                          style={{ color: 'rgb(0,0,0)' }}
-                        >
-                          <path d='M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z' />
-                        </svg>
-                      </button>
-                      <div className='dropdown-menu'>
-                        <a className='dropdown-item' href={`/editprofile`}>
-                          <Link to={'/editprofile'}>Edit Profile</Link>
-                        </a>
-                      </div>
-                    </div>
+                    <div></div>
                   </div>
                   <div
                     className='d-flex flex-row justify-content-start align-items-start d-none d-md-block'
@@ -333,78 +277,37 @@ const ProfileScreen = () => {
                       </li>
                     </ul>
                     <div className='tab-content'>
-                      <div role='tabpanel' className='tab-pane' id='tab-1'>
+                      <div
+                        role='tabpanel'
+                        className='tab-pane active'
+                        id='tab-1'
+                      >
                         <section
                           className='photo-gallery'
                           style={{ marginTop: '5px' }}
                         >
                           <div className='container'>
                             <div className='row photos' data-bss-baguettebox>
-                              {myPosts.map((post) => (
-                                <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                  <a href='desk.jpg'>
-                                    <img
-                                      alt=''
-                                      className='img-fluid'
-                                      src={post.image}
-                                    />
-                                  </a>
-                                </div>
-                              ))}
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='building.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='loft.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='building.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='loft.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='desk.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
+                              {myPosts ? (
+                                myPosts.map((post) => (
+                                  <div className='col-sm-6 col-md-4 col-lg-3 item'>
+                                    <a href='desk.jpg'>
+                                      <img
+                                        alt=''
+                                        className='img-fluid'
+                                        src={post.image}
+                                      />
+                                    </a>
+                                  </div>
+                                ))
+                              ) : (
+                                <Loader />
+                              )}
                             </div>
                           </div>
                         </section>
                       </div>
-                      <div
-                        role='tabpanel'
-                        className='tab-pane active'
-                        id='tab-2'
-                      >
+                      <div role='tabpanel' className='tab-pane' id='tab-2'>
                         <p>Content for tab 2.</p>
                       </div>
                       <div role='tabpanel' className='tab-pane' id='tab-3'>

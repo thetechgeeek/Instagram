@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { UserContext } from '../App';
 import { useParams } from 'react-router';
 import Loader from '../components/loader';
+
 const ProfileScreen = () => {
   const [userProfile, setUserProfile] = useState(null);
 
@@ -94,10 +95,6 @@ const ProfileScreen = () => {
           className='container text-center flex-row flex-grow-1 justify-content-center'
           style={{ marginTop: '70px', height: '70vh' }}
         >
-          <button type='button' className='btn btn-primary' id='liveToastBtn'>
-            Show live toast
-          </button>
-
           <div
             className='position-fixed bottom-0 end-0 p-3'
             style={{ zIndex: '11' }}
@@ -125,54 +122,7 @@ const ProfileScreen = () => {
               </div>
             </div>
           </div>
-          <button
-            type='button'
-            className='btn btn-primary'
-            data-bs-toggle='modal'
-            data-bs-target='#exampleModal'
-          >
-            Launch demo modal
-          </button>
 
-          <div
-            className='modal fade'
-            id='exampleModal'
-            tabindex='-1'
-            role='dialog'
-            aria-labelledby='exampleModalLabel'
-            aria-hidden='true'
-          >
-            <div className='modal-dialog' role='document'>
-              <div className='modal-content'>
-                <div className='modal-header'>
-                  <h5 className='modal-title' id='exampleModalLabel'>
-                    Modal title
-                  </h5>
-                  <button
-                    type='button'
-                    className='close'
-                    data-dismiss='modal'
-                    aria-label='Close'
-                  >
-                    <span aria-hidden='true'>&times;</span>
-                  </button>
-                </div>
-                <div className='modal-body'>...</div>
-                <div className='modal-footer'>
-                  <button
-                    type='button'
-                    className='btn btn-secondary'
-                    data-bs-dismiss='modal'
-                  >
-                    Close
-                  </button>
-                  <button type='button' className='btn btn-primary'>
-                    Save changes
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
           <div
             className='row d-flex flex-column'
             style={{ maxWidth: '953px', margin: 'auto', marginTop: '15px' }}
@@ -253,37 +203,7 @@ const ProfileScreen = () => {
                         </button>
                       )}
                     </div>
-                    <div>
-                      <button
-                        className='btn btn-primary shadow-none'
-                        type='button'
-                        style={{
-                          color: 'rgb(0,0,0)',
-                          background: 'rgb(255,255,255)',
-                          borderStyle: 'solid',
-                          borderColor: 'rgb(219,219,219)',
-                          borderTopStyle: 'solid',
-                          marginRight: '10px',
-                          paddingTop: '2px',
-                          paddingBottom: '2px',
-                        }}
-                      >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          width='1em'
-                          height='1em'
-                          fill='currentColor'
-                          viewBox='0 0 16 16'
-                          className='bi bi-person-check'
-                        >
-                          <path d='M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z' />
-                          <path
-                            fillRule='evenodd'
-                            d='M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z'
-                          />
-                        </svg>
-                      </button>
-                    </div>
+                    <div></div>
                   </div>
                   <div
                     className='d-flex flex-row justify-content-start align-items-start d-none d-md-block'
@@ -448,7 +368,11 @@ const ProfileScreen = () => {
                       </li>
                     </ul>
                     <div className='tab-content'>
-                      <div role='tabpanel' className='tab-pane' id='tab-1'>
+                      <div
+                        role='tabpanel'
+                        className='tab-pane active'
+                        id='tab-1'
+                      >
                         <section
                           className='photo-gallery'
                           style={{ marginTop: '5px' }}
@@ -466,60 +390,11 @@ const ProfileScreen = () => {
                                   </a>
                                 </div>
                               ))}
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='building.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='loft.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='building.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='loft.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
-                              <div className='col-sm-6 col-md-4 col-lg-3 item'>
-                                <a href='desk.jpg'>
-                                  <img
-                                    alt=''
-                                    className='img-fluid'
-                                    src='https://images.unsplash.com/photo-1599850929872-2dec3cbafd7f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c3F1YXJlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-                                  />
-                                </a>
-                              </div>
                             </div>
                           </div>
                         </section>
                       </div>
-                      <div
-                        role='tabpanel'
-                        className='tab-pane active'
-                        id='tab-2'
-                      >
+                      <div role='tabpanel' className='tab-pane' id='tab-2'>
                         <p>Content for tab 2.</p>
                       </div>
                       <div role='tabpanel' className='tab-pane' id='tab-3'>

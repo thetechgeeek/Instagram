@@ -159,7 +159,7 @@ const HomeScreen = () => {
                             alt=''
                             className='rounded-circle'
                             style={{ height: ' 32px', width: ' 32px' }}
-                            src={`${state.image}`}
+                            src={`${post.postedBy.image}`}
                           />
                         </Link>
                       </div>
@@ -220,7 +220,15 @@ const HomeScreen = () => {
                             </svg>
                           </button>
                           <div className='dropdown-menu'>
-                            {post.postedBy._id === state._id && (
+                            {post.postedBy._id === state._id ? (
+                              <a
+                                type='button'
+                                className='dropdown-item'
+                                onClick={() => deletePost(post._id)}
+                              >
+                                Delete Post
+                              </a>
+                            ) : (
                               <a
                                 type='button'
                                 className='dropdown-item'
