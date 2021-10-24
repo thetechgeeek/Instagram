@@ -14,5 +14,11 @@ export const reducer = (state, action) => {
       following: action.payload.following,
     };
   }
+  if (action.type === 'UPDATE_PROFILE_PIC') {
+    return {
+      ...state,
+      image: action.payload,
+    };
+  }
   return state;
 };

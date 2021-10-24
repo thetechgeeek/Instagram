@@ -120,3 +120,6 @@ footer a {
   color: rgb(142, 142, 142);
   text-decoration: none;
 }
+.card-img {
+  border-radius: 0 !important;
+}

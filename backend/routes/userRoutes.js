@@ -159,4 +159,17 @@ router.put('/unfollow', authMiddleware, (req, res) => {
     }
   );
 });
+router.put('/updateprofilepic', authMiddleware, (req, res) => {
+  User.findByIdAndUpdate(
+    req.user._id,
+    { $set: { image: req.body.image } },
+    { new: true },
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({ error: 'Image cannot be updated.' });
+      }
+      res.json(result);
+    }
+  );
+});
 export default router;

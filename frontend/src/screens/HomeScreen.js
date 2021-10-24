@@ -135,7 +135,7 @@ const HomeScreen = () => {
                     marginBottom: '25px',
                   }}
                 >
-                  <div>
+                  <div style={{ borderBottom: '1px solid rgb(219,219,219)' }}>
                     <div
                       className='row d-flex flex-row flex-nowrap'
                       style={{ maxHeight: ' 60px' }}
@@ -165,7 +165,7 @@ const HomeScreen = () => {
                       </div>
                       <div
                         className='col-10 d-flex flex-column justify-content-center'
-                        style={{ paddingLeft: '10px' }}
+                        style={{ paddingLeft: '10px', width: '73.3%' }}
                       >
                         <p
                           style={{
@@ -190,7 +190,10 @@ const HomeScreen = () => {
                           {post.location}
                         </p>
                       </div>
-                      <div className='col-1 d-flex flex-row justify-content-end align-items-center'>
+                      <div
+                        className='col-1 d-flex flex-row justify-content-end align-items-center'
+                        style={{ marginLeft: '40px' }}
+                      >
                         <div className='dropdown'>
                           <button
                             className='btn btn-primary shadow-none'
@@ -234,11 +237,12 @@ const HomeScreen = () => {
                   <Link to={`/post/${post._id}`}>
                     <img
                       alt=''
-                      className='card-img w-100 d-block border rounded-0'
+                      className='card-img w-100 d-block'
                       src={post.image}
                       style={{
                         marginRight: ' 0px',
                         borderStyle: ' none !important',
+                        borderRadius: '0 !important',
                       }}
                     />
                   </Link>

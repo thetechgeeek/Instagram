@@ -3,10 +3,13 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Loader from '../components/loader';
 import { UserContext } from '../App';
+import { Link } from 'react-router-dom';
 
 const ProfileScreen = () => {
   const [myPosts, setMyPosts] = useState([]);
   const { state } = useContext(UserContext);
+  const [image, setImage] = useState('');
+  const [url, setUrl] = useState('');
   console.log(state);
   useEffect(() => {
     fetch('/myposts', {
@@ -15,6 +18,24 @@ const ProfileScreen = () => {
       .then((res) => res.json())
       .then((result) => setMyPosts(result.myPosts));
   }, []);
+
+  const updateProfilePic = () => {
+    const data = new FormData();
+    data.append('file', image);
+    data.append('upload_preset', 'instagram');
+    data.append('cloud_name', 'thetechgeeek');
+    fetch('	https://api.cloudinary.com/v1_1/thetechgeeek/image/upload', {
+      method: 'post',
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUrl(data.url);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <Header />
@@ -33,12 +54,20 @@ const ProfileScreen = () => {
                   className='col-4 d-flex flex-column justify-content-start align-items-center'
                   style={{ paddingTop: '16px' }}
                 >
-                  <img
-                    alt=''
-                    className='rounded-circle img-fluid'
-                    src={state.image}
-                    style={{ maxWidth: '150px' }}
-                  />
+                  <button
+                    style={{
+                      border: 'none',
+                      backgroundColor: 'rgb(250,250,250)',
+                    }}
+                    onClick={() => updateProfilePic()}
+                  >
+                    <img
+                      alt=''
+                      className='rounded-circle img-fluid'
+                      src={state.image}
+                      style={{ maxWidth: '150px' }}
+                    />
+                  </button>
                 </div>
                 <div
                   className='col-8 text-start'
@@ -135,8 +164,8 @@ const ProfileScreen = () => {
                         </svg>
                       </button>
                       <div className='dropdown-menu'>
-                        <a className='dropdown-item' href={`/editProfile`}>
-                          First Item
+                        <a className='dropdown-item' href={`/editprofile`}>
+                          <Link to={'/editprofile'}>Edit Profile</Link>
                         </a>
                       </div>
                     </div>

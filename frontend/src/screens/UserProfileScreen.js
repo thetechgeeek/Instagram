@@ -284,37 +284,6 @@ const ProfileScreen = () => {
                         </svg>
                       </button>
                     </div>
-
-                    <div className='dropdown'>
-                      <button
-                        className='btn btn-primary shadow-none'
-                        aria-expanded='false'
-                        data-bs-toggle='dropdown'
-                        type='button'
-                        style={{
-                          color: 'rgb(0,0,0)',
-                          background: 'rgb(255,255,255)',
-                          borderStyle: 'none',
-                        }}
-                      >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          width='1em'
-                          height='1em'
-                          fill='currentColor'
-                          viewBox='0 0 16 16'
-                          className='bi bi-three-dots'
-                          style={{ color: 'rgb(0,0,0)' }}
-                        >
-                          <path d='M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z' />
-                        </svg>
-                      </button>
-                      <div className='dropdown-menu'>
-                        <a className='dropdown-item' href={`/editProfile`}>
-                          First Item
-                        </a>
-                      </div>
-                    </div>
                   </div>
                   <div
                     className='d-flex flex-row justify-content-start align-items-start d-none d-md-block'

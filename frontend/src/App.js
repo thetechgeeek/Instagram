@@ -6,6 +6,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
 import ExploreScreen from './screens/ExploreScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import EditProfileScreen from './screens/EditProfileScreen';
 import UserProfileScreen from './screens/UserProfileScreen';
 import CreatePostScreen from './screens/CreatePostScreen';
 import { reducer, initialState } from './reducers/userReducer';
@@ -29,6 +30,7 @@ const Routing = () => {
       <Route path='/register' component={RegisterScreen} />
       <Route path='/login' component={LoginScreen} />
       <Route path='/profile' component={ProfileScreen} exact />
+      <Route path='/editprofile' component={EditProfileScreen} exact />
       <Route path='/profile/:userId' component={UserProfileScreen} exact />
       <Route path='/post/create' component={CreatePostScreen} exact />
     </>
