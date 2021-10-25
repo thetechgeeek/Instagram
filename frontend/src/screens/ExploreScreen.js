@@ -7,6 +7,8 @@ import Loader from '../components/loader';
 
 const HomeScreen = () => {
   const [data, setData] = useState(null);
+  const [userList, setUserList] = useState(null);
+
   const { state } = useContext(UserContext);
 
   useEffect(() => {
@@ -17,6 +19,13 @@ const HomeScreen = () => {
       .then((result) => {
         console.log(result);
         setData(result.posts);
+      });
+    fetch('/allusers', {
+      headers: { Authorization: 'Bearer ' + localStorage.getItem('jwt') },
+    })
+      .then((res) => res.json())
+      .then((fin) => {
+        setUserList(fin.users);
       });
   }, []);
 
@@ -528,7 +537,6 @@ const HomeScreen = () => {
                   </div>
                 </div>
               </div>
-              {/*  */}
               <div>
                 <div style={{ marginTop: '20px' }}>
                   <div
@@ -569,52 +577,77 @@ const HomeScreen = () => {
 
               <div>
                 <div style={{ marginTop: '5px' }}>
-                  <div
-                    className='row d-flex flex-row flex-nowrap'
-                    style={{ maxHeight: ' 60px' }}
-                  >
-                    <div
-                      className='col-1 d-flex flex-row justify-content-center align-items-center align-items-md-center'
-                      style={{
-                        padding: 'auto',
-                        paddingLeft: ' 32px',
-                      }}
-                    >
-                      <img
-                        alt=''
-                        className='rounded-circle'
-                        style={{ height: ' 36px', width: ' 36px' }}
-                        src='https://media-exp1.licdn.com/dms/image/C4E0BAQHikN6EXPd23Q/company-logo_200_200/0/1595359131127?e=2159024400&v=beta&t=S5MNjBDjiH433VCWzjPeiopNDhxGwmfcMk4Zf1P_m_s'
-                      />
-                    </div>
-                    <div
-                      className='col-8 d-flex flex-column justify-content-center'
-                      style={{ paddingLeft: '15px' }}
-                    >
-                      <p
-                        style={{
-                          marginBottom: ' 0px',
-                          fontSize: ' 14px',
-                          fontWeight: ' bold',
-                          marginTop: ' 10px',
-                        }}
-                      >
-                        rowanrow
-                      </p>
-                      <p style={{ marginTop: ' 0px', fontSize: ' 12px' }}>
-                        Rowan Row
-                      </p>
-                    </div>
-                    <div className='col-3 d-flex flex-row justify-content-start align-items-center'>
-                      <button
-                        className='btn'
-                        type='button'
-                        style={{ background: ' #ffffff', fontSize: ' 14px' }}
-                      >
-                        Follow
-                      </button>
-                    </div>
-                  </div>
+                  {userList ? (
+                    userList.slice(0, 5).map((user) => {
+                      return (
+                        <>
+                          {' '}
+                          <div
+                            className='row d-flex flex-row flex-nowrap'
+                            style={{ maxHeight: ' 60px' }}
+                          >
+                            <div
+                              className='col-1 d-flex flex-row justify-content-center align-items-center align-items-md-center'
+                              style={{
+                                padding: 'auto',
+                                paddingLeft: ' 32px',
+                              }}
+                            >
+                              <img
+                                alt=''
+                                className='rounded-circle'
+                                style={{ height: ' 36px', width: ' 36px' }}
+                                src={user.image}
+                              />
+                            </div>
+                            <div
+                              className='col-8 d-flex flex-column justify-content-center'
+                              style={{ paddingLeft: '15px' }}
+                            >
+                              <p
+                                style={{
+                                  marginBottom: ' 0px',
+                                  fontSize: ' 14px',
+                                  fontWeight: ' bold',
+                                  marginTop: ' 10px',
+                                }}
+                              >
+                                {user.username}
+                              </p>
+                              <p
+                                style={{ marginTop: ' 0px', fontSize: ' 12px' }}
+                              >
+                                {user.name}
+                              </p>
+                            </div>
+                            <div className='col-3 d-flex flex-row justify-content-start align-items-center'>
+                              <button
+                                className='btn btn-sm btn-primary'
+                                type='button'
+                                style={{
+                                  fontSize: ' 14px',
+                                }}
+                              >
+                                <Link
+                                  style={{
+                                    textDecoration: 'none',
+                                    fontSize: '0.9rem',
+                                    color: 'white',
+                                  }}
+                                  to={`/profile/${user._id}`}
+                                >
+                                  Follow
+                                </Link>
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })
+                  ) : (
+                    <Loader />
+                  )}
+                  {/*  */}
                 </div>
               </div>
               <Footer />

@@ -26,7 +26,7 @@ const Header = () => {
           </svg>
           Profile
         </Link>,
-        <Link className='dropdown-item' to={'/profile/edit'}>
+        <Link className='dropdown-item' to={'/editprofile'}>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='1em'

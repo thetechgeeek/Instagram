@@ -10,6 +10,7 @@ const RegisterScreen = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [image, setImage] = useState('');
+  const [bio, setBio] = useState('');
   const [url, setUrl] = useState(undefined);
   const [show, setShow] = useState(false);
   const [tempData, setTempData] = useState('');
@@ -57,6 +58,7 @@ const RegisterScreen = () => {
         username,
         password,
         image: url,
+        bio,
       }),
     })
       .then((res) => res.json())
@@ -272,6 +274,25 @@ const RegisterScreen = () => {
                 className='shadow-none form-control form-control-sm'
                 id='photo'
                 onChange={(e) => setImage(e.target.files[0])}
+              />
+              <input
+                type='text'
+                className='shadow-none form-control'
+                style={{
+                  borderStyle: ' solid',
+                  borderColor: ' rgb(219,219,219)',
+                  background: ' rgb(249,249,249)',
+                  color: ' rgb(142,142,142)',
+                  fontSize: ' 12px',
+                  margin: ' auto',
+                  marginTop: ' 5px',
+                  width: ' 258px',
+                }}
+                placeholder='Enter a Bio'
+                value={bio}
+                onChange={(e) => {
+                  setBio(e.target.value);
+                }}
               />
             </div>
             <button

@@ -20,5 +20,13 @@ export const reducer = (state, action) => {
       image: action.payload,
     };
   }
+  if (action.type === 'UPDATE_PROFILE') {
+    return {
+      ...state,
+      bio: action.payload.bio,
+      name: action.payload.name,
+      username: action.payload.username,
+    };
+  }
   return state;
 };

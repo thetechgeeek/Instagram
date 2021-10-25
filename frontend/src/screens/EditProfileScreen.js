@@ -3,15 +3,17 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { UserContext } from '../App';
 import Loader from '../components/loader';
+import Toast from 'react-bootstrap/Toast';
 
 const EditProfileScreen = () => {
   const { state, dispatch } = useContext(UserContext);
-
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  const [show, setShow] = useState(false);
+  const [tempData, setTempData] = useState('');
+  const [name, setName] = useState(state ? state.name : '');
+  const [username, setUsername] = useState(state ? state.username : '');
+  const [bio, setBio] = useState(state ? state.bio : '');
   const [image, setImage] = useState('');
-
+  const [submission, setSubmission] = useState(false);
   useEffect(() => {
     if (image) {
       const data = new FormData();
@@ -24,8 +26,6 @@ const EditProfileScreen = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-
           fetch('/updateprofilepic', {
             method: 'put',
             headers: {
@@ -34,22 +34,74 @@ const EditProfileScreen = () => {
             },
             body: JSON.stringify({
               image: data.url,
+              bio: bio,
             }),
           })
             .then((res) => res.json())
             .then((result) => {
               localStorage.setItem(
                 'user',
-                JSON.stringify({ ...state, image: result.image })
+                JSON.stringify({
+                  ...state,
+                  image: result.image,
+                  bio: result.bio,
+                })
               );
-              dispatch({ type: 'UPDATE_PROFILE_PIC', payload: result.image });
+              dispatch({
+                type: 'UPDATE_PROFILE_PIC',
+                payload: result.image,
+              });
+              setTempData('Profile Picture Updated');
+              setShow(true);
             });
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [image]);
+    if (submission) {
+      fetch('/updateprofile', {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+        },
+        body: JSON.stringify({
+          bio: bio,
+          name: name,
+          username: username,
+        }),
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          localStorage.setItem(
+            'user',
+            JSON.stringify({
+              ...state,
+              bio: result.bio,
+              name: result.name,
+              username: result.username,
+            })
+          );
+          dispatch({
+            type: 'UPDATE_PROFILE',
+            payload: {
+              bio: result.bio,
+              name: result.name,
+              username: result.username,
+            },
+          });
+          setTempData('Successfully Updated');
+          setShow(true);
+          setSubmission(false);
+        })
+        .catch((err) => {
+          setTempData(err);
+          setShow(true);
+          console.log(err);
+        });
+    }
+  }, [image, state, dispatch, submission]);
   const updateProfilePic = (file) => {
     setImage(file);
   };
@@ -58,6 +110,7 @@ const EditProfileScreen = () => {
       <Header />
       {state ? (
         <div className='container'>
+          {/* {setName(state.name) && setUsername(state.username)} */}
           <div
             className='d-flex align-items-start flex-wrap flex-md-nowrap'
             style={{
@@ -168,6 +221,7 @@ const EditProfileScreen = () => {
                     </label>
                     <div className='col-sm-10'>
                       <input
+                        autoComplete='off'
                         type='file'
                         className='shadow-none form-control'
                         id='photo'
@@ -184,9 +238,11 @@ const EditProfileScreen = () => {
                     </label>
                     <div className='col-sm-10'>
                       <input
+                        autoComplete='off'
                         type='text'
                         className='shadow-none form-control'
                         id='name'
+                        value={name}
                         placeholder='Enter name'
                         onChange={(e) => setName(e.target.value)}
                       />
@@ -210,10 +266,13 @@ const EditProfileScreen = () => {
                     </label>
                     <div className='col-sm-10'>
                       <input
+                        autoComplete='off'
                         type='text'
                         className='shadow-none form-control'
                         id='username'
                         placeholder='Enter Username'
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                       />
                       <div className='form-text'>
                         In most cases, you'll be able to change your username
@@ -231,10 +290,13 @@ const EditProfileScreen = () => {
                     </label>
                     <div className='col-sm-10'>
                       <input
+                        autoComplete='off'
                         type='textarea'
                         className='shadow-none form-control'
                         id='bio'
+                        value={bio}
                         placeholder='Enter Bio'
+                        onChange={(e) => setBio(e.target.value)}
                       />
                       <div className='form-text'>
                         Personal information Provide your personal information,
@@ -253,6 +315,7 @@ const EditProfileScreen = () => {
                     </label>
                     <div className='col-sm-10'>
                       <input
+                        autoComplete='off'
                         type='email'
                         className='shadow-none form-control'
                         id='email'
@@ -263,10 +326,29 @@ const EditProfileScreen = () => {
 
                   <button
                     className='btn-sm btn-primary shadow-none py-1'
-                    onClick={() => updateProfilePic()}
+                    onClick={() => setSubmission(true)}
                   >
                     Submit
                   </button>
+                  <Toast
+                    style={{
+                      fontSize: '0.7rem',
+                      width: '258px',
+                      zIndex: '100',
+                      position: 'absolute',
+                      marginTop: '10px',
+                    }}
+                    bg='success'
+                    onClose={() => setShow(false)}
+                    show={show}
+                    delay={3000}
+                    position='top-center'
+                    autohide
+                  >
+                    <Toast.Header>
+                      <strong className='me-auto'>{tempData}</strong>
+                    </Toast.Header>
+                  </Toast>
                 </div>
               </div>
               <div
@@ -288,6 +370,7 @@ const EditProfileScreen = () => {
                     </label>
                     <div className='col-sm-10'>
                       <input
+                        autoComplete='off'
                         type='password'
                         className='shadow-none form-control'
                         id='oldpassword'
@@ -295,47 +378,51 @@ const EditProfileScreen = () => {
                       />
                     </div>
                   </div>
-                  <div
-                    className='form-group row'
-                    style={{ marginBottom: '15px' }}
-                  >
-                    <label
-                      htmlFor='newpassword'
-                      className='col-sm-2 col-form-label'
+                  <form>
+                    <div
+                      className='form-group row'
+                      style={{ marginBottom: '15px' }}
                     >
-                      New Password
-                    </label>
-                    <div className='col-sm-10'>
-                      <input
-                        type='password'
-                        className='shadow-none form-control'
-                        id='newpassword'
-                        placeholder='Enter New Password'
-                      />
+                      <label
+                        htmlFor='newpassword'
+                        className='col-sm-2 col-form-label'
+                      >
+                        New Password
+                      </label>
+                      <div className='col-sm-10'>
+                        <input
+                          autoComplete='off'
+                          type='password'
+                          className='shadow-none form-control'
+                          id='newpassword'
+                          placeholder='Enter New Password'
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div
-                    className='form-group row'
-                    style={{ marginBottom: '15px' }}
-                  >
-                    <label
-                      htmlFor='confirmpassword'
-                      className='col-sm-2 col-form-label'
+                    <div
+                      className='form-group row'
+                      style={{ marginBottom: '15px' }}
                     >
-                      Confirm Password
-                    </label>
-                    <div className='col-sm-10'>
-                      <input
-                        type='password'
-                        className='shadow-none form-control'
-                        id='confirmpassword'
-                        placeholder='Confirm Password'
-                      />
+                      <label
+                        htmlFor='confirmpassword'
+                        className='col-sm-2 col-form-label'
+                      >
+                        Confirm Password
+                      </label>
+                      <div className='col-sm-10'>
+                        <input
+                          autoComplete='off'
+                          type='password'
+                          className='shadow-none form-control'
+                          id='confirmpassword'
+                          placeholder='Confirm Password'
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <button className='btn-sm btn-primary shadow-none py-1'>
-                    Submit
-                  </button>
+                    <button className='btn-sm btn-primary shadow-none py-1'>
+                      Submit
+                    </button>
+                  </form>
                 </div>
               </div>
               <div

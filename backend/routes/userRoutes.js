@@ -11,7 +11,7 @@ router.get('/protected', authMiddleware, (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  const { name, username, email, password, image } = req.body;
+  const { name, username, email, password, image, bio } = req.body;
   if (!name || !username || !email || !password) {
     return res
       .status(422)
@@ -30,6 +30,7 @@ router.post('/register', (req, res) => {
           email,
           password: hashedPassword,
           image: image,
+          bio,
         });
         user
           .save()
@@ -61,11 +62,28 @@ router.post('/login', (req, res) => {
         .then((doMatch) => {
           if (doMatch) {
             const token = jwt.sign({ _id: SavedUser }, process.env.JWT_SECRET);
-            const { _id, name, email, username, followers, following, image } =
-              SavedUser;
+            const {
+              _id,
+              name,
+              email,
+              username,
+              followers,
+              following,
+              image,
+              bio,
+            } = SavedUser;
             res.json({
               token,
-              user: { _id, name, email, username, followers, following, image },
+              user: {
+                _id,
+                name,
+                email,
+                username,
+                followers,
+                following,
+                image,
+                bio,
+              },
             });
           } else {
             return res.status(422).json({ error: 'Invalid Email/Password.' });
@@ -172,4 +190,36 @@ router.put('/updateprofilepic', authMiddleware, (req, res) => {
     }
   );
 });
+router.put('/updateprofile', authMiddleware, (req, res) => {
+  User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        bio: req.body.bio,
+        name: req.body.name,
+        username: req.body.username,
+      },
+    },
+    { new: true },
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({ error: 'Proile cannot be updated.' });
+      }
+      res.json(result);
+    }
+  );
+});
+
+router.get('/allusers', authMiddleware, (req, res) => {
+  User.find()
+    .select('name username _id image')
+
+    .then((users) => {
+      res.json({ users });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 export default router;

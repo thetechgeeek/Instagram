@@ -131,14 +131,7 @@ const ProfileScreen = () => {
                       {state ? state.name : 'Loading...'}
                     </h6>
                     <p>
-                      • 🇬🇧~rowanrow.com
-                      <br />
-                      •📍London | 1.5M+ YouTube subs
-                      <br />• ⬇️ Get your 5000 QMiles&nbsp;
-                      <a href='https://www.instagram.com/explore/tags/qatarairways/'>
-                        #qatarairways
-                      </a>
-                      &nbsp;⬇️
+                      {state.bio}
                       <br />
                     </p>
                   </div>
@@ -307,11 +300,11 @@ const ProfileScreen = () => {
                           </div>
                         </section>
                       </div>
-                      <div role='tabpanel' className='tab-pane' id='tab-2'>
-                        <p>Content for tab 2.</p>
+                      <div role='tabpanel' className='tab-pane mt-4' id='tab-2'>
+                        <h5>This functionality is not included yet.</h5>
                       </div>
-                      <div role='tabpanel' className='tab-pane' id='tab-3'>
-                        <p>Content for tab 3.</p>
+                      <div role='tabpanel' className='tab-pane mt-4' id='tab-3'>
+                        <h5>This functionality is not included yet.</h5>
                       </div>
                     </div>
                   </div>

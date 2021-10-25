@@ -38,8 +38,13 @@ const CreatePostScreen = () => {
           }
         })
         .catch((err) => {
+          setTempData(err);
+          setShow(true);
           console.log(err);
         });
+    } else {
+      setTempData('Please select an image!');
+      setShow(true);
     }
   }, [url, caption, history, location]);
   const postDetail = () => {
@@ -56,6 +61,8 @@ const CreatePostScreen = () => {
         setUrl(data.url);
       })
       .catch((err) => {
+        setTempData(err);
+        setShow(true);
         console.log(err);
       });
   };
