@@ -174,7 +174,7 @@ const HomeScreen = () => {
                       </div>
                       <div
                         className='col-10 d-flex flex-column justify-content-center'
-                        style={{ paddingLeft: '10px' }}
+                        style={{ paddingLeft: '10px', width: '73.3%' }}
                       >
                         <p
                           style={{
@@ -199,7 +199,10 @@ const HomeScreen = () => {
                           {post.location}
                         </p>
                       </div>
-                      <div className='col-1 d-flex flex-row justify-content-end align-items-center'>
+                      <div
+                        className='col-1 d-flex flex-row justify-content-end align-items-center'
+                        style={{ marginLeft: '40px' }}
+                      >
                         <div className='dropdown'>
                           <button
                             className='btn btn-primary shadow-none'
@@ -227,13 +230,17 @@ const HomeScreen = () => {
                           </button>
                           <div className='dropdown-menu'>
                             {post.postedBy._id === state._id && (
-                              <a
-                                type='button'
+                              <button
                                 className='dropdown-item'
                                 onClick={() => deletePost(post._id)}
                               >
                                 Delete Post
-                              </a>
+                              </button>
+                            )}
+                            {post.postedBy._id !== state._id && (
+                              <Link to={`/profile/${post.postedBy._id}`}>
+                                <button className='btn'>View Profile </button>
+                              </Link>
                             )}
                           </div>
                         </div>
@@ -243,11 +250,12 @@ const HomeScreen = () => {
                   <Link to={`/post/${post._id}`}>
                     <img
                       alt=''
-                      className='card-img w-100 d-block border rounded-0'
+                      className='card-img w-100 d-block'
                       src={post.image}
                       style={{
                         marginRight: ' 0px',
                         borderStyle: ' none !important',
+                        borderRadius: '0 !important',
                       }}
                     />
                   </Link>
@@ -458,6 +466,7 @@ const HomeScreen = () => {
                         }}
                       >
                         <input
+                          autoComplete='off'
                           type='text'
                           id={`comment-focus-${post._id}`}
                           className='shadow-none form-control'

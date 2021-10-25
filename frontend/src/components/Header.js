@@ -77,8 +77,8 @@ const Header = () => {
           //   position: 'fixed',
         }}
       >
-        <div className='container'>
-          <Link to={state ? `/` : 'login'}>
+        <div className='container' style={{ maxWidth: '975px' }}>
+          <Link to={state ? `/` : '/login'}>
             <img
               alt=''
               className='navbar-brand'
@@ -88,11 +88,12 @@ const Header = () => {
           </Link>
           <input
             type='text'
-            className='placeholder d-none d-md-block'
+            className=' d-none d-md-block'
             style={{
               background: 'rgb(250,250,250)',
               borderRadius: '3px',
               fontSize: '14px',
+              fontWeight: '300',
               textAlign: 'center',
               border: '1px solid rgb(219,219,219)',
               color: 'rgb(142,142,142)',
@@ -211,55 +212,69 @@ const Header = () => {
         }}
       >
         <div className='container'>
-          <button
-            className='btn'
-            type='button'
-            style={{ background: '#ffffff' }}
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='1em'
-              height='1em'
-              fill='currentColor'
-              viewBox='0 0 16 16'
-              className='bi bi-house-door'
-              style={{ fontSize: '25px' }}
-            >
-              <path d='M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z' />
-            </svg>
-          </button>
+          <Link to={'/'}>
+            <button className='btn'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='1em'
+                height='1em'
+                fill='currentColor'
+                viewBox='0 0 16 16'
+                className='bi bi-house-door'
+                style={{ fontSize: '25px' }}
+              >
+                <path d='M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z' />
+              </svg>
+            </button>
+          </Link>
 
-          <button
-            className='btn'
-            type='button'
-            style={{ background: '#ffffff' }}
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='1em'
-              height='1em'
-              fill='currentColor'
-              viewBox='0 0 16 16'
-              className='bi bi-search'
-              style={{ fontSize: '25px' }}
-            >
-              <path d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z' />
-            </svg>
-          </button>
-          <button className='btn' type='button'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='1em'
-              height='1em'
-              fill='currentColor'
-              viewBox='0 0 16 16'
-              className='bi bi-compass'
-              style={{ fontSize: '25px' }}
-            >
-              <path d='M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016zm6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z' />
-              <path d='m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z' />
-            </svg>
-          </button>
+          <Link to={`/`}>
+            <button className='btn'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='1em'
+                height='1em'
+                fill='currentColor'
+                viewBox='0 0 16 16'
+                className='bi bi-search'
+                style={{ fontSize: '25px' }}
+              >
+                <path d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z' />
+              </svg>
+            </button>
+          </Link>
+          <Link to={`/post/create`}>
+            <button className='btn'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='1em'
+                height='1em'
+                fill='currentColor'
+                viewBox='0 0 16 16'
+                className='bi bi-plus-square'
+                style={{ fontSize: '25px' }}
+              >
+                <path d='M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z'></path>
+                <path d='M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z'></path>
+              </svg>
+            </button>
+          </Link>
+          <Link to={`/explore`}>
+            <button className='btn '>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='1em'
+                height='1em'
+                fill='currentColor'
+                viewBox='0 0 16 16'
+                className='bi bi-compass'
+                style={{ fontSize: '25px' }}
+              >
+                <path d='M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016zm6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z' />
+                <path d='m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z' />
+              </svg>
+            </button>
+          </Link>
           <Link to={'/profile'}>
             <button className='btn' type='button'>
               <svg
