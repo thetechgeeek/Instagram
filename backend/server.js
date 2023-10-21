@@ -18,10 +18,11 @@ app.use(postRoutes);
 
 const __dirname = path.resolve();
 
-if (process.env.NODE_ENV == 'production') {
-    app.use(express.static('/frontend/build'));
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
     app.get('*', (req, res) => {
-        res.send(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+        res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
     });
 }
 
