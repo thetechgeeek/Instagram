@@ -1,5 +1,5 @@
 > Due to similarities with the original social platform, Google marked the deployed version as a phising website. Kindlly ignore this.
-> Deployed version - https://instagram000.herokuapp.com
+> Deployed version - [https://instagram000.herokuapp.com](https://instagram-vatc.onrender.com)
 
 <!-- PROJECT LOGO -->
 <br />
